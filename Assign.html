@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Assignment System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #f0e68c, #8fbc8f);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 80px;
+            background-color: #a78558;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            height: 100vh;
+        }
+        .sidebar a {
+            color: white;
+            margin: 25px 0;
+            font-size: 28px;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            color: #00bfff;
+        }
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .container {
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            margin: auto;
+        }
+        .task {
+            background: #ffffff;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #ddd;
+        }
+        .task.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .task input {
+            margin-right: 10px;
+        }
+        .delete-btn {
+            color: red;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: blue;
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <a href="Mytask.html">🏠</a>
+        <a href="index.html">📅</a>
+        <a href="Admin.html">👤</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <h2 class="text-center mb-4">Assign Task</h2>
+
+            <input type="text" id="taskTitle" class="form-control mb-2" placeholder="Task Title">
+            <input type="text" id="assignee" class="form-control mb-2" placeholder="Assign to (Member Name)">
+            <input type="date" id="dueDate" class="form-control mb-3">
+            <button class="btn btn-success w-100 mb-3" onclick="addTask()">Add Task</button>
+
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-3" id="taskTabs">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="tab" href="#allTasks">All Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#incompleteTasks">Incomplete</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="tab" href="#completedTasks">Completed</a>
+                </li>
+            </ul>
+
+            <!-- Task Lists -->
+            <div class="tab-content">
+                <div id="allTasks" class="tab-pane fade show active">
+                    <div id="taskList"></div>
+                </div>
+                <div id="incompleteTasks" class="tab-pane fade">
+                    <div id="incompleteTaskList"></div>
+                </div>
+                <div id="completedTasks" class="tab-pane fade">
+                    <div id="completedTaskList"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="addTask()">+</button>
+
+    <script>
+        function addTask() {
+            let title = document.getElementById('taskTitle').value;
+            let assignee = document.getElementById('assignee').value;
+            let dueDate = document.getElementById('dueDate').value;
+            
+            if (title.trim() === '' || assignee.trim() === '' || dueDate.trim() === '') {
+                alert('Please fill all fields');
+                return;
+            }
+            
+            let taskContainer = document.createElement('div');
+            taskContainer.className = 'task d-flex justify-content-between align-items-center';
+            taskContainer.innerHTML = `
+                <div>
+                    <input type="checkbox" onchange="toggleComplete(this)">
+                    <strong>${title}</strong> - ${assignee} (Due: ${dueDate})
+                </div>
+                <span class="delete-btn" onclick="deleteTask(this)">✖</span>
+            `;
+            
+            document.getElementById('taskList').appendChild(taskContainer);
+            document.getElementById('incompleteTaskList').appendChild(taskContainer.cloneNode(true));
+
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('assignee').value = '';
+            document.getElementById('dueDate').value = '';
+        }
+        
+        function toggleComplete(checkbox) {
+            let task = checkbox.parentElement.parentElement;
+            task.classList.toggle('completed');
+
+            if (checkbox.checked) {
+                document.getElementById('completedTaskList').appendChild(task);
+            } else {
+                document.getElementById('incompleteTaskList').appendChild(task);
+            }
+        }
+
+        function deleteTask(deleteBtn) {
+            deleteBtn.parentElement.remove();
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .sidebar {
+            width: 60px;
+            height: 100vh;
+            background-color: #23232e;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            color: white;
+            margin: 15px 0;
+            text-decoration: none;
+            font-size: 20px;
+        }
+        .task-container {
+            margin-left: 80px;
+            padding: 20px;
+        }
+        .task-list {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .task-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .task-item:last-child {
+            border-bottom: none;
+        }
+        .task-item input {
+            margin-right: 10px;
+        }
+        .btn-add {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex">
+        <div class="sidebar">
+            <a href="#">🏠</a>
+            <a href="#">📅</a>
+            <a href="#">🔍</a>
+            <a href="#">➕</a>
+        </div>
+        <div class="container task-container">
+            <h2 class="mb-4">Tasks</h2>
+            <ul class="nav nav-tabs mb-3">
+                <li class="nav-item">
+                    <a class="nav-link " href="index.html">All Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="Mytask.html">My Tasks</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="Incomplete.html">Incomplete</a>
+                </li>
+            </ul>
+            <div class="task-list" id="taskList">
+                <div class="task-item">
+                    <div>
+                        <input type="checkbox" checked onchange="toggleTask(this)">
+                        <span class="text-muted">Help customers</span>
+                    </div>
+                    <span class="badge bg-secondary">Project Two</span>
+                </div>
+                <div class="task-item">
+                    <div>
+                        <input type="checkbox" checked onchange="toggleTask(this)">
+                        <span class="text-muted">Add new features</span>
+                    </div>
+                    <span class="badge bg-secondary">Project Two</span>
+                </div>
+                <div class="task-item">
+                    <div>
+                        <input type="checkbox" onchange="toggleTask(this)">
+                        <span>Develop Android App</span>
+                    </div>
+                    <span class="badge bg-secondary">Project Two</span>
+                </div>
+                <div class="task-item">
+                    <div>
+                        <input type="checkbox" checked onchange="toggleTask(this)">
+                        <span class="text-muted">Task One</span>
+                    </div>
+                    <span class="badge bg-secondary">Project Two</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="btn-add" onclick="addTask()">+</button>
+
+    <script>
+        function toggleTask(checkbox) {
+            let taskText = checkbox.nextElementSibling;
+            if (checkbox.checked) {
+                taskText.classList.add("text-muted");
+            } else {
+                taskText.classList.remove("text-muted");
+            }
+        }
+
+        function addTask() {
+            let taskText = prompt("Enter new task:");
+            if (taskText) {
+                let taskList = document.getElementById("taskList");
+                let newTask = document.createElement("div");
+                newTask.className = "task-item";
+                newTask.innerHTML = `
+                    <div>
+                        <input type="checkbox" onchange="toggleTask(this)">
+                        <span>\${taskText}</span>
+                    </div>
+                    <span class="badge bg-secondary">New</span>
+                `;
+                taskList.appendChild(newTask);
+            }
+        }
+    </script>
+</body>
+</html>
